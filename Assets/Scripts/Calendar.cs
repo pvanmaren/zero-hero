@@ -25,12 +25,11 @@ public class Calendar : MonoBehaviour
     [SerializeField] private Button[] dayButtons;
     [SerializeField] private Button[] timeButtons;
     [SerializeField] private AppData appData;
+    [SerializeField] private GameObject exitButton;
     [SerializeField] private GameObject calender;
     [SerializeField] private GameObject time;
     [SerializeField] private GameObject confirmationPrompt;
     [SerializeField] private GameObject locations;
-
-
 
     private int currentMonth;
     private int currentDay;
@@ -72,12 +71,18 @@ public class Calendar : MonoBehaviour
         UpdateCalendar();
         
     }
+    public void GoToHome()
+    {
+        SceneManager.LoadScene("HomeScreen");
+    }
 
     public void OpenCalendar()
     {
-        // Makes sure the calender is visible
+        // Activates gameobjects
         calender.SetActive(true);
-        // Makes sure the time and date are invisible
+        exitButton.SetActive(true);
+
+        // Deactivates gameobjects
         time.SetActive(false);
         date.gameObject.SetActive(false);
         confirmationPrompt.SetActive(false);
@@ -183,11 +188,15 @@ public class Calendar : MonoBehaviour
     private void OpenTime(int clickedDay, string month)
     {
         appData.SetViewReservation(clickedDay);
+        // Deactivates gameobjects
         calender.SetActive(false);
         confirmationPrompt.SetActive(false);
         locations.SetActive(false);
+
+        // Activates gameobjects
         time.SetActive(true);
         date.gameObject.SetActive(true);
+
         // Creates a string with the current date
         string currentDate = clickedDay.ToString() + " " + month.ToUpper();
         date.text = currentDate;
@@ -247,12 +256,14 @@ public class Calendar : MonoBehaviour
 
     private void OpenConfirmation(string clickedDate, string clickedTime)
     {
-        
+        // Deactivates gameobjects
         time.SetActive(false);
         calender.SetActive(false);
         locations.SetActive(false);
-
+        exitButton.SetActive(false);
+        // Activates gameobjects
         confirmationPrompt.SetActive(true);
+
         UpdateConfirmation(clickedDate, clickedTime);
     }
 
@@ -273,9 +284,13 @@ public class Calendar : MonoBehaviour
 
     private void OpenLocation(string pickedDate, string pickedTime)
     {
+        // Deactivates gameobjects
         calender.SetActive(false);
         confirmationPrompt.SetActive(false);
         time.SetActive(false);
+        exitButton.SetActive(false);
+
+        // Activates gameobjects
         locations.SetActive(true);
 
         plannedDate = pickedDate;
@@ -294,13 +309,6 @@ public class Calendar : MonoBehaviour
 
     private void Reserve()
     {
-/*        print(plannedDate);
-        print(plannedTime);
-
-        print(currentDay);
-        print(currentMonth);
-        print(currentYear);*/
-
 
         string startDateTime = currentDay +"-"+ currentMonth + "-" + currentYear + " " + plannedTime.Split("-")[0];
         string endDateTime = currentDay +"-"+ currentMonth + "-" + currentYear + " " + plannedTime.Split("-")[1];
@@ -346,8 +354,4 @@ public class Calendar : MonoBehaviour
 
         OpenCalendar();
     }
-
-
-
-
 }
