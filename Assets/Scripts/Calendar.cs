@@ -30,6 +30,7 @@ public class Calendar : MonoBehaviour
     [SerializeField] private GameObject time;
     [SerializeField] private GameObject confirmationPrompt;
     [SerializeField] private GameObject locations;
+    private Button[] reservedTimeButton;
 
     private int currentMonth;
     private int currentDay;
@@ -227,6 +228,11 @@ public class Calendar : MonoBehaviour
             startReservationTime.color = Color.black;
             endReservationTime.color = Color.black;
 
+            string clickedTime = timeSlots[i].ToString("HH:mm") + " - " + timeSlots[i+1].ToString("HH:mm");
+            // Add an onClick event handler
+            timeButtons[i].onClick.RemoveAllListeners();
+            timeButtons[i].onClick.AddListener(() => OpenConfirmation(date, clickedTime));
+
             // Loops through the json objects
             foreach (Reservation reservation in reservations.reservations)
             {
@@ -238,18 +244,16 @@ public class Calendar : MonoBehaviour
 
                     if (timeSlots[i].ToString("HH:mm") == reservedTime[1])
                     {
-
                         startReservationTime.color = Color.red;
                         endReservationTime.color = Color.red;
+                        timeButtons[i].onClick.RemoveListener(() => OpenConfirmation(date, clickedTime));
+
                     }
 
                 }
 
             }
-            string clickedTime = timeSlots[i].ToString("HH:mm") + " - " + timeSlots[i+1].ToString("HH:mm");
-            // Add an onClick event handler
-            timeButtons[i].onClick.RemoveAllListeners();
-            timeButtons[i].onClick.AddListener(() => OpenConfirmation(date, clickedTime));
+
 
         }
     }
