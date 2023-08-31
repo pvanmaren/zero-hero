@@ -30,7 +30,8 @@ public class Calendar : MonoBehaviour
     [SerializeField] private GameObject time;
     [SerializeField] private GameObject confirmationPrompt;
     [SerializeField] private GameObject locations;
-    private Button[] reservedTimeButton;
+    private List<Button> reservedTimeButton = new List<Button>();
+    private List<string> clickedTimeList = new List<string>();
 
     private int currentMonth;
     private int currentDay;
@@ -62,14 +63,13 @@ public class Calendar : MonoBehaviour
 
     private void Start()
     {
-        OpenCalendar();
         // Path to the json file
         credentialPath = Application.dataPath + "/credentials/reservations.json";
         // Set initial month and year
         currentMonth = System.DateTime.Now.Month;
         currentYear = System.DateTime.Now.Year;
-        // Update calendar display
-        UpdateCalendar();
+        // Opens the calendar display
+        OpenCalendar();
         
     }
     public void GoToHome()
@@ -79,6 +79,9 @@ public class Calendar : MonoBehaviour
 
     public void OpenCalendar()
     {
+        //reset variables
+        reservedTimeButton.Clear();
+
         // Activates gameobjects
         calender.SetActive(true);
         exitButton.SetActive(true);
@@ -88,6 +91,7 @@ public class Calendar : MonoBehaviour
         date.gameObject.SetActive(false);
         confirmationPrompt.SetActive(false);
         locations.SetActive(false);
+        UpdateCalendar();
     }
 
     public void NextMonth()
@@ -185,6 +189,8 @@ public class Calendar : MonoBehaviour
             }
         }
     }
+
+
     
     private void OpenTime(int clickedDay, string month)
     {
@@ -229,11 +235,8 @@ public class Calendar : MonoBehaviour
             endReservationTime.color = Color.black;
 
             string clickedTime = timeSlots[i].ToString("HH:mm") + " - " + timeSlots[i+1].ToString("HH:mm");
-            // Add an onClick event handler
-            timeButtons[i].onClick.RemoveAllListeners();
-            timeButtons[i].onClick.AddListener(() => OpenConfirmation(date, clickedTime));
-
             // Loops through the json objects
+            timeButtons[i].onClick.AddListener(() => OpenConfirmation(date, clickedTime));
             foreach (Reservation reservation in reservations.reservations)
             {
                 dateTime = reservation.startDateTime.Split("-");
@@ -241,21 +244,29 @@ public class Calendar : MonoBehaviour
 
                 if (day == int.Parse(dateTime[0]))
                 {
-
                     if (timeSlots[i].ToString("HH:mm") == reservedTime[1])
                     {
                         startReservationTime.color = Color.red;
                         endReservationTime.color = Color.red;
-                        timeButtons[i].onClick.RemoveListener(() => OpenConfirmation(date, clickedTime));
 
+                      /*  reservedTimeButton.Add(timeButtons[i]);
+                        clickedTimeList.Add(clickedTime);*/
+                        timeButtons[i].onClick.RemoveAllListeners();
                     }
-
                 }
-
             }
-
-
+            // Add an onClick event handler
         }
+
+       /* Button[] reservedTimeButtonArray = reservedTimeButton.ToArray();
+        string[] clickedTimeArray = clickedTimeList.ToArray();
+
+        for (int i = 0; i < reservedTimeButtonArray.Length; i++)
+        {
+            string clickedTime = clickedTimeArray[i];
+            print(reservedTimeButtonArray[i]);
+            reservedTimeButtonArray[i].onClick.RemoveAllListeners();
+        }*/
     }
 
     private void OpenConfirmation(string clickedDate, string clickedTime)
