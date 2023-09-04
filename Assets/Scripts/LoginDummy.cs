@@ -40,6 +40,8 @@ public class LoginDummy : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        emailInput.contentType = TMP_InputField.ContentType.Standard;
+        passwordInput.contentType = TMP_InputField.ContentType.Password;
         if (appData.GetErrorMsg() != "")
         {
             displayErrorContainer.SetActive(true);

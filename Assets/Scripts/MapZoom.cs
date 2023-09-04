@@ -16,6 +16,7 @@ public class MapZoom : MonoBehaviour
         //52.04460121973492, 4.250174259776212 (TIH)
         MRO = GameObject.Find("MapRenderer");
         map = MRO.GetComponent<MapRenderer>();
+        
         map.ZoomLevel = 14f;
 
     }
