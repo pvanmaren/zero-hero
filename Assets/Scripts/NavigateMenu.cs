@@ -13,7 +13,9 @@ public class NavigateMenu : MonoBehaviour
     [SerializeField] private Button rideInfoButton;
     [SerializeField] private Button routeHistoryButton;
     [SerializeField] private GameObject menu;
-    [SerializeField] private GameObject mainUi;
+    [SerializeField] private GameObject profileButtonGO;
+    [SerializeField] private GameObject reservationButtonGO;
+    [SerializeField] private GameObject centerButtonGO;
     [SerializeField] private GameObject personalInfoScreen;
     [SerializeField] private GameObject rideInfoScreen;
     [SerializeField] private GameObject routeHistoryScreen;
@@ -33,7 +35,9 @@ public class NavigateMenu : MonoBehaviour
     }
     public void OpenMenu()
     {
-        mainUi.SetActive(false);
+        profileButtonGO.SetActive(false);
+        reservationButtonGO.SetActive(false);
+        centerButtonGO.SetActive(false);
         personalInfoScreen.SetActive(false);
         rideInfoScreen.SetActive(false);
         routeHistoryScreen.SetActive(false);
@@ -53,13 +57,17 @@ public class NavigateMenu : MonoBehaviour
         rideInfoScreen.SetActive(false);
         routeHistoryScreen.SetActive(false);
         //Toont de MainUI
-        mainUi.SetActive(true);
+        profileButtonGO.SetActive(true);
+        reservationButtonGO.SetActive(true);
+        centerButtonGO.SetActive(true);
         appData.SetOpenMenu(false);
     }
     private void OpenPersonalInfo()
     {
         menu.SetActive(false);
-        mainUi.SetActive(false);
+        profileButtonGO.SetActive(false);
+        reservationButtonGO.SetActive(false);
+        centerButtonGO.SetActive(false);
         rideInfoScreen.SetActive(false);
         routeHistoryScreen.SetActive(false);
         //Toont de personal info screen
@@ -68,7 +76,9 @@ public class NavigateMenu : MonoBehaviour
     private void OpenRideInfo()
     {
         menu.SetActive(false);
-        mainUi.SetActive(false);
+        profileButtonGO.SetActive(false);
+        reservationButtonGO.SetActive(false);
+        centerButtonGO.SetActive(false);
         personalInfoScreen.SetActive(false);
         routeHistoryScreen.SetActive(false);
         //Toont de ride info screen
@@ -77,7 +87,9 @@ public class NavigateMenu : MonoBehaviour
     private void OpenRouteHistory()
     {
         menu.SetActive(false);
-        mainUi.SetActive(false);
+        profileButtonGO.SetActive(false);
+        reservationButtonGO.SetActive(false);
+        centerButtonGO.SetActive(false);
         personalInfoScreen.SetActive(false);
         rideInfoScreen.SetActive(false);
         //Toont de ride info screen
