@@ -9,7 +9,6 @@ public class LoadPersonalInfo : MonoBehaviour
     [SerializeField] private TMP_Text fullName;
     [SerializeField] private TMP_Text location;
     [SerializeField] private TMP_Text function;
-    [SerializeField] private TMP_Text totalKm;
     [SerializeField] private TMP_Text totalRides;
 
     [System.Serializable]
@@ -44,7 +43,6 @@ public class LoadPersonalInfo : MonoBehaviour
         fullName.text = user.name;
         location.text = user.location;
         function.text = user.function;
-        totalKm.text = user.totalKm.ToString();
         totalRides.text = user.totalRides.ToString();
 
     }
