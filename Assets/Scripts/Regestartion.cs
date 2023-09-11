@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.Networking; // Import UnityWebRequest
+using UnityEngine.Networking;
 using System.Collections.Generic;
 using TMPro;
 
