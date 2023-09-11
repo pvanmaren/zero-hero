@@ -1,4 +1,4 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
@@ -7,7 +7,20 @@ using TMPro;
 public class ReservationHistory : MonoBehaviour
 {
     [SerializeField] private AppData appData;
-    [SerializeField] private GameObject historyPrefab;
+    /*    [SerializeField] private GameObject currentReservation;
+        [SerializeField] private GameObject prevReservation;*/
+
+    [SerializeField] private TMP_Text currentReservationDisplayDate;
+    [SerializeField] private TMP_Text currentReservationDisplayTime;
+    [SerializeField] private TMP_Text currentReservationDisplayPointA;
+    [SerializeField] private TMP_Text currentReservationDisplayPointB;
+
+    [SerializeField] private TMP_Text nextReservationDisplayDate;
+    [SerializeField] private TMP_Text nextReservationDisplayTime;
+    [SerializeField] private TMP_Text nextReservationDisplayPointA;
+    [SerializeField] private TMP_Text nextReservationDisplayPointB;
+
+    private List<int> userReservations = new List<int>();
 
     private string credentialPath;
     private int userId;
@@ -30,6 +43,8 @@ public class ReservationHistory : MonoBehaviour
         public Reservation[] reservations;
     }
 
+    private Reservations allReservation;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -38,20 +53,60 @@ public class ReservationHistory : MonoBehaviour
         userId = appData.GetLoginId();
         string JSONstring = File.ReadAllText(credentialPath);
         Reservations reservations = JsonUtility.FromJson<Reservations>(JSONstring);
-        // Loops through the json objects
-        foreach (Reservation reservation in reservations.reservations)
+
+        allReservation = reservations;
+        foreach(Reservation reservation in allReservation.reservations)
         {
-            if(reservation.user_id == userId)
+           if (reservation.user_id == userId)
             {
-                GameObject currentPrefab = Instantiate(historyPrefab, transform.position, Quaternion.identity);
-                // Find all TMP_Text components in the instantiated prefab
-                TMP_Text[] textComponents = currentPrefab.GetComponentsInChildren<TMP_Text>();
-                Debug.Log("Number of TMP_Text components: " + textComponents.Length);
+                userReservations.Add(reservation.id);
+            }
+        }
+        CurrentReservation();
+    }
 
-                /*print(reservation.ToString());*/
+    private void CurrentReservation()
+    {
+        DateTime currentDateTime = DateTime.Now;
+        string currentDateTimeString = currentDateTime.ToString();
+        string currentDate = currentDateTimeString.Split(" ")[0].Replace("/", "-");
+        print(currentDate);
+        foreach (int userReservation in userReservations)
+        {
+            foreach (Reservation reservation in allReservation.reservations)
+            {
+                if (userReservation == reservation.id)
+                {
+                    string reservationDate = reservation.startDateTime.Split(" ")[0];
+                    string reservationTime = reservation.startDateTime.Split(" ")[1] + " - " + reservation.endDateTime.Split(" ")[2];
 
+                    string reservationDay = reservationDate.Split("-")[0];
+                    string reservationMonth = reservationDate.Split("-")[1];
+
+                    if (currentDate == reservationDate)
+                    {
+                        currentReservationDisplayDate.text = reservationDate;
+                        currentReservationDisplayTime.text = reservationTime;
+                        currentReservationDisplayPointA.text = reservation.pointA;
+                        currentReservationDisplayPointB.text = reservation.pointB;
+                        break;
+                    }
+                    else if (currentDate.Split("-")[1] == reservationMonth)
+                    {
+                        print(reservationDay);
+
+                        if (int.Parse(currentDate.Split("-")[0]) < int.Parse(reservationDay))
+                        {
+                            print(reservationDate);
+                            currentReservationDisplayDate.text = reservationDate;
+                            currentReservationDisplayTime.text = reservationTime;
+                            currentReservationDisplayPointA.text = reservation.pointA;
+                            currentReservationDisplayPointB.text = reservation.pointB;
+                            break;
+                        }
+                    }
+                }
             }
         }
     }
-
 }
