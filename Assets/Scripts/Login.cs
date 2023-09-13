@@ -36,8 +36,12 @@ public class Login : MonoBehaviour
             if (www.result == UnityWebRequest.Result.Success)
             {
                 string responseText = www.downloadHandler.text;
+                string[] responseTextSplit = responseText.Split('"');
+                string responseStatus = responseTextSplit[1];
+                string responseErrorMsg = responseTextSplit[3];
 
-                if (responseText.StartsWith("0"))
+
+                if (responseStatus == "success")
                 {
                     // Login successful
                     DBManager.username = nameField.text;
@@ -47,7 +51,7 @@ public class Login : MonoBehaviour
                 else
                 {
                     // Login failed
-                    Debug.LogError("Login failed: " + responseText);
+                    Debug.LogError("Login failed: " + responseErrorMsg);
                 }
             }
             else
