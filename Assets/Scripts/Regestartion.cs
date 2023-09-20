@@ -15,9 +15,11 @@ public class Regestartion : MonoBehaviour
 
     public void CallRegister()
     {
-        print(nameField.text, functionField.text, emailField.text, passwordField.text);
+        string output = nameField.text + ", " + functionField.text + ", " + emailField.text + ", " + passwordField.text;
+        print(output);
         //StartCoroutine(GetRegister());
     }
+
 
     private IEnumerator GetRegister()
     {
@@ -41,8 +43,8 @@ public class Regestartion : MonoBehaviour
         }
     }
 
-    public void verifyInputs()
+  /*  public void verifyInputs()
     {
         submitButton.interactable = (nameField.text.Length >= 8 && passwordField.text.Length >= 8);
-    }
+    }*/
 }
