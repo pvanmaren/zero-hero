@@ -10,6 +10,9 @@ public class Login : MonoBehaviour
     public TMP_InputField nameField;
     public TMP_InputField passwordField;
     public Button submitButton;
+    [SerializeField] private AppData appData;
+
+    private string userData;
 
     public void CallLogin()
     {
@@ -36,7 +39,19 @@ public class Login : MonoBehaviour
             if (www.result == UnityWebRequest.Result.Success)
             {
                 string responseText = www.downloadHandler.text;
+                string[] responseTextSplitter = responseText.Split("{");
                 string[] responseTextSplit = responseText.Split('"');
+                print(responseTextSplitter.Length);
+                if (responseTextSplitter.Length > 2) 
+                {
+                    userData = responseTextSplitter[^1];
+                }
+                foreach (string word in responseTextSplitter)
+                {
+                    print(word);
+                }
+
+                print("user data: " + userData);
                 string responseStatus = responseTextSplit[1];
                 string responseErrorMsg = responseTextSplit[3];
 
@@ -46,7 +61,7 @@ public class Login : MonoBehaviour
                     // Login successful
                     DBManager.username = nameField.text;
                     Debug.Log("Login successful!");
-                    UnityEngine.SceneManagement.SceneManager.LoadScene(4);
+                    /*UnityEngine.SceneManagement.SceneManager.LoadScene(4);*/
                 }
                 else
                 {

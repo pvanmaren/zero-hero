@@ -404,8 +404,8 @@ GameObject:
   - component: {fileID: 313773496}
   - component: {fileID: 313773495}
   - component: {fileID: 313773494}
-  - component: {fileID: 313773499}
   - component: {fileID: 313773498}
+  - component: {fileID: 313773499}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -511,7 +511,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 313773493}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 33b802f262a010a459e9bbf303a0eaf4, type: 3}
   m_Name: 
@@ -532,14 +532,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 313773493}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f60bc458d69f36940bcd05867bc1741c, type: 3}
+  m_Script: {fileID: 11500000, guid: 4ebba2432c285a24fb2795140d695912, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  email: {fileID: 1020325868}
-  password: {fileID: 0}
-  errormsg: {fileID: 1202716409}
-  loginButton: {fileID: 1795107532}
-  url: http://localhost/unity/index.php
+  nameField: {fileID: 1020325868}
+  passwordField: {fileID: 1394943345}
+  submitButton: {fileID: 1795107532}
 --- !u!1 &319382934
 GameObject:
   m_ObjectHideFlags: 0
@@ -2136,8 +2134,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 313773499}
-        m_TargetAssemblyTypeName: Server, Assembly-CSharp
-        m_MethodName: OnLoginButtonClicked
+        m_TargetAssemblyTypeName: Login, Assembly-CSharp
+        m_MethodName: CallLogin
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

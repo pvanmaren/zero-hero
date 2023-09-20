@@ -10,40 +10,46 @@ if (mysqli_connect_errno()) {
 }
 
 $username = $_POST["name"];
+$email = $_POST["email"];
+$function = $_POST["function"];
 $password = $_POST["password"];
+$role = ["ROLE_USER"];
 
-// Check if the username already exists
-$nameCheckQuery = "SELECT username FROM users WHERE username=?";
-$stmt = mysqli_prepare($con, $nameCheckQuery);
-mysqli_stmt_bind_param($stmt, "s", $username);
-mysqli_stmt_execute($stmt);
-$result = mysqli_stmt_get_result($stmt);
+echo json_encode(array("name" => $username, "email" => $email, "function" => $function, "password" => $password));
 
-if (!$result) {
-    echo json_encode(array("error" => "Name check query failed"));
-    exit();
-}
+exit();
 
-if (mysqli_num_rows($result) > 0) {
-    echo json_encode(array("error" => "Username already exists"));
-    exit();
-}
+// // Check if the username already exists
+// $nameCheckQuery = "SELECT username FROM users WHERE username=?";
+// $stmt = mysqli_prepare($con, $nameCheckQuery);
+// mysqli_stmt_bind_param($stmt, "s", $username);
+// mysqli_stmt_execute($stmt);
+// $result = mysqli_stmt_get_result($stmt);
 
-// Generate a secure salt and hash the password
-$salt = '$5$rounds=5000$' . 'steamedhams' . $username . '$';
-$hash = crypt($password, $salt);
+// if (!$result) {
+//     echo json_encode(array("error" => "Name check query failed"));
+//     exit();
+// }
 
-// Insert the user into the table
-$insertUserQuery = "INSERT INTO users (username, hash, salt) VALUES (?, ?, ?)";
-$stmt = mysqli_prepare($con, $insertUserQuery);
-mysqli_stmt_bind_param($stmt, "sss", $username, $hash, $salt);
-$result = mysqli_stmt_execute($stmt);
+// if (mysqli_num_rows($result) > 0) {
+//     echo json_encode(array("error" => "Username already exists"));
+//     exit();
+// }
 
-if (!$result) {
-    echo json_encode(array("error" => "Insert user query failed"));
-} else {
-    echo json_encode(array("success" => "User registered successfully"));
-}
+// // Encrypts password
+// $encryptedPassword = password_hash($password, PASSWORD_DEFAULT);
 
-mysqli_close($con);
+// // Insert the user into the table
+// $insertUserQuery = "INSERT INTO users (email, roles, password, function, full_name) VALUES (?, ?, ?, ?, ?)";
+// $stmt = mysqli_prepare($con, $insertUserQuery);
+// mysqli_stmt_bind_param($stmt, "sss", $email, $role, $encryptedPassword, $function, $username);
+// $result = mysqli_stmt_execute($stmt);
+
+// if (!$result) {
+//     echo json_encode(array("error" => "Insert user query failed"));
+// } else {
+//     echo json_encode(array("success" => "User registered successfully"));
+// }
+
+// mysqli_close($con);
 ?>

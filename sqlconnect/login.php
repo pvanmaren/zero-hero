@@ -12,7 +12,7 @@ if (mysqli_connect_errno()) {
 $username = $_POST["name"];
 $password = $_POST["password"];
 
-$nameCheckQuery = "SELECT username, salt, hash FROM users WHERE username=?";
+$nameCheckQuery = "SELECT * FROM users WHERE email=?";
 $stmt = mysqli_prepare($con, $nameCheckQuery);
 mysqli_stmt_bind_param($stmt, "s", $username);
 mysqli_stmt_execute($stmt);
@@ -29,15 +29,13 @@ if (mysqli_num_rows($result) != 1) {
 }
 
 $existingInfo = mysqli_fetch_assoc($result);
-$salt = $existingInfo["salt"];
-$hash = $existingInfo["hash"];
 
-$loginHash = crypt($password, $salt);
+$loginHash = password_verify($password, $existingInfo["password"]);
 
-if ($hash != $loginHash) {
+if (!$loginHash) {
     echo json_encode(array("error" => "Incorrect password"));
 } else {
-    echo json_encode(array("success" => "Login successful"));
+    echo json_encode(array("success" => "Login successful", "data" => $existingInfo));
 }
 
 mysqli_close($con);
