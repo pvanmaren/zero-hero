@@ -14,7 +14,6 @@ public class NavigateMenu : MonoBehaviour
     [SerializeField] private GameObject menu;
     [SerializeField] private GameObject profileButtonGO;
     [SerializeField] private GameObject reservationButtonGO;
-    [SerializeField] private GameObject centerButtonGO;
     [SerializeField] private GameObject personalInfoScreen;
     [SerializeField] private GameObject routeHistoryScreen;
 
@@ -34,35 +33,39 @@ public class NavigateMenu : MonoBehaviour
     {
         profileButtonGO.SetActive(false);
         reservationButtonGO.SetActive(false);
-        centerButtonGO.SetActive(false);
         personalInfoScreen.SetActive(false);
         routeHistoryScreen.SetActive(false);
         //Toont het menu
         menu.SetActive(true);
         appData.SetOpenMenu(true);
     }
-    public void OpenReservations()
-    {
-        SceneManager.LoadScene("ReservationScreen", LoadSceneMode.Single);
-
-    }
     public void CloseMenu()
     {
+        //TODO:create if statement that checks the last location of the car e.g.
+        //if (lastLocation == "Tinwerf 14") {
+        //  car.setActive(true);
+        //}
+        //else {
+        //  car.setActive(false);
+        //}
+
         menu.SetActive(false);
         personalInfoScreen.SetActive(false);
         routeHistoryScreen.SetActive(false);
         //Toont de MainUI
         profileButtonGO.SetActive(true);
         reservationButtonGO.SetActive(true);
-        centerButtonGO.SetActive(true);
         appData.SetOpenMenu(false);
+    }
+    public void OpenReservations()
+    {
+        SceneManager.LoadScene("ReservationScreen", LoadSceneMode.Single);
     }
     private void OpenPersonalInfo()
     {
         menu.SetActive(false);
         profileButtonGO.SetActive(false);
         reservationButtonGO.SetActive(false);
-        centerButtonGO.SetActive(false);
         //Toont de personal info screen
         personalInfoScreen.SetActive(true);
     }
@@ -71,7 +74,6 @@ public class NavigateMenu : MonoBehaviour
         menu.SetActive(false);
         profileButtonGO.SetActive(false);
         reservationButtonGO.SetActive(false);
-        centerButtonGO.SetActive(false);
         personalInfoScreen.SetActive(false);
         //Toont de ride info screen
         routeHistoryScreen.SetActive(true);
