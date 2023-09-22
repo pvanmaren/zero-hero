@@ -8,7 +8,7 @@ using UnityEngine.SceneManagement;
 using System.Globalization;
 using TMPro;
 
-public class Calendar : MonoBehaviour
+public class Calendar1 : MonoBehaviour
 {
 
     [SerializeField] private ReservationsInsert reservationsInsert;
@@ -34,9 +34,11 @@ public class Calendar : MonoBehaviour
     [SerializeField] private GameObject locations;
     private List<Button> reservedTimeButton = new List<Button>();
 
+
     private int currentMonth;
     private int currentDay;
     private int currentYear;
+    private int previousId;
     private string credentialPath;
     private string plannedDate;
     private string plannedTime;
@@ -51,6 +53,7 @@ public class Calendar : MonoBehaviour
         public string pointB;
         public string startDateTime;
         public string endDateTime;
+        public bool paused;
         public int user_id;
     }
 
@@ -71,64 +74,6 @@ public class Calendar : MonoBehaviour
         OpenCalendar();
         
     }
-
-
-    /*IEnumerator GetAllReservations()
-    {
-      
-
-        List<IMultipartFormSection> formData = new List<IMultipartFormSection>();
-        formData.Add(new MultipartFormDataSection("name", nameField.text));
-        formData.Add(new MultipartFormDataSection("password", passwordField.text));
-
-        using (UnityWebRequest www = UnityWebRequest.Post("http://localhost/sqlconnect/login.php", formData))
-        {
-            yield return www.SendWebRequest();
-
-            if (www.result == UnityWebRequest.Result.Success)
-            {
-                string responseText = www.downloadHandler.text;
-                string[] responseTextSplitter = responseText.Split("{");
-                string[] responseTextSplit = responseText.Split('"');
-                if (responseTextSplitter.Length > 2)
-                {
-                    userData = responseTextSplitter[^1];
-                }
-
-                string responseStatus = responseTextSplit[1];
-                string responseErrorMsg = responseTextSplit[3];
-
-                if (responseStatus == "success")
-                {
-                    int userId = int.Parse(userData.Split(",")[0].Split(":")[1]);
-                    string fullName = userData.Split(",")[5].Split('"')[3];
-                    string function = userData.Split(",")[4].Split('"')[3];
-
-                    //saves the users data localy
-                    appData.SetLoginId(userId);
-                    appData.SetUserFullName(fullName);
-                    appData.SetUserFunction(function);
-
-                    // Login successful
-                    DBManager.username = nameField.text;
-                    Debug.Log("Login successful!");
-                    UnityEngine.SceneManagement.SceneManager.LoadScene("HomeScreen");
-                }
-                else
-                {
-                    // Login failed
-                    Debug.LogError("Login failed: " + responseErrorMsg);
-                }
-            }
-            else
-            {
-                // Handle network errors
-                Debug.LogError("Network error: " + www.error);
-            }
-        }
-    }*/
-
-
     public void GoToHome()
     {
         SceneManager.LoadScene("HomeScreen");
@@ -246,6 +191,9 @@ public class Calendar : MonoBehaviour
             }
         }
     }
+
+
+    
     private void OpenTime(int clickedDay, string month)
     {
         appData.SetViewReservation(clickedDay);
@@ -362,9 +310,47 @@ public class Calendar : MonoBehaviour
 
     private void Reserve()
     {
+
         string startDateTime = currentDay +"-"+ currentMonth + "-" + currentYear + " " + plannedTime.Split("-")[0];
         string endDateTime = currentDay +"-"+ currentMonth + "-" + currentYear + " " + plannedTime.Split("-")[1];
+
         reservationsInsert.CallReserve(appData.GetLoginId(), startLocationInput.text, endLocationInput.text, startDateTime, endDateTime);
+
+        /*        string JSONstring = File.ReadAllText(credentialPath);
+                Reservations reservations = JsonUtility.FromJson<Reservations>(JSONstring);
+
+                // Loops through the json objects
+                foreach (Reservation reservation in reservations.reservations)
+                {
+                    previousId = reservation.id;
+                }
+
+                // Calculates new id 
+                int newId = previousId + 1;
+
+                // New Reservation
+                Reservation newReservation = new Reservation
+                {
+                    id = newId,
+                    pointA = startLocationInput.text,
+                    pointB = endLocationInput.text,
+                    startDateTime = startDateTime,
+                    endDateTime = endDateTime,
+                    paused = false,
+                    user_id = appData.GetLoginId()
+                };
+
+                // Makes the array bigger by resizing it
+                Array.Resize(ref reservations.reservations, reservations.reservations.Length + 1);
+                // Places the new reservation
+                reservations.reservations[^1] = newReservation;
+
+                // Convert the updated list or array to JSON
+                string updatedJsonData = JsonUtility.ToJson(reservations, true);
+
+                // Write the updated JSON data back to the file
+                File.WriteAllText(credentialPath, updatedJsonData);
+        */
         SceneManager.LoadScene("ReservationScreen");
     }
 }
