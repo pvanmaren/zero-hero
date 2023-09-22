@@ -41,27 +41,29 @@ public class Login : MonoBehaviour
                 string responseText = www.downloadHandler.text;
                 string[] responseTextSplitter = responseText.Split("{");
                 string[] responseTextSplit = responseText.Split('"');
-                print(responseTextSplitter.Length);
                 if (responseTextSplitter.Length > 2) 
                 {
                     userData = responseTextSplitter[^1];
                 }
-                foreach (string word in responseTextSplitter)
-                {
-                    print(word);
-                }
 
-                print("user data: " + userData);
                 string responseStatus = responseTextSplit[1];
                 string responseErrorMsg = responseTextSplit[3];
 
-
                 if (responseStatus == "success")
                 {
+                    int userId = int.Parse(userData.Split(",")[0].Split(":")[1]);
+                    string fullName = userData.Split(",")[5].Split('"')[3];
+                    string function = userData.Split(",")[4].Split('"')[3];
+
+                    //saves the users data localy
+                    appData.SetLoginId(userId);
+                    appData.SetUserFullName(fullName);
+                    appData.SetUserFunction(function);
+
                     // Login successful
                     DBManager.username = nameField.text;
                     Debug.Log("Login successful!");
-                    /*UnityEngine.SceneManagement.SceneManager.LoadScene(4);*/
+                    UnityEngine.SceneManagement.SceneManager.LoadScene("HomeScreen");
                 }
                 else
                 {

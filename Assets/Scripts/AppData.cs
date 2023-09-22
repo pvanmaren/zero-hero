@@ -3,6 +3,8 @@ using UnityEngine;
 public class AppData : ScriptableObject 
 {
     public int loginId = 0;
+    public string userFullName = "";
+    public string userFunction = "";
     public string errorMsg = "";
     public bool openMenu = false;
     public int viewReservation;
@@ -18,6 +20,30 @@ public class AppData : ScriptableObject
         loginId = loginIdInt;
 
     }
+
+    //users full name
+    public string GetUserFullName()
+    {
+        return userFullName;
+    }
+
+    public void SetUserFullName(string fullname)
+    {
+        userFullName = fullname;
+
+    }
+    //users function
+    public string GetUserFunction()
+    {
+        return userFunction;
+    }
+
+    public void SetUserFunction(string fnct)
+    {
+        userFunction = fnct;
+
+    }
+
     //error message
     public string GetErrorMsg()
     {
