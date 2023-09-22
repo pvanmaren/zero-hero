@@ -1254,6 +1254,7 @@ MonoBehaviour:
   nameField: {fileID: 876838165}
   passwordField: {fileID: 173776040}
   submitButton: {fileID: 1587936454}
+  appData: {fileID: 0}
 --- !u!1 &1288703848
 GameObject:
   m_ObjectHideFlags: 0
@@ -1759,7 +1760,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 0
+  m_Interactable: 1
   m_TargetGraphic: {fileID: 1587936455}
   m_OnClick:
     m_PersistentCalls:
