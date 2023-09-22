@@ -12,13 +12,14 @@ if (mysqli_connect_errno()) {
 $username = $_POST["name"];
 $password = $_POST["password"];
 
-$nameCheckQuery = "SELECT * FROM users WHERE email=?";
+$nameCheckQuery = "SELECT * FROM user WHERE email=?";
 $stmt = mysqli_prepare($con, $nameCheckQuery);
 mysqli_stmt_bind_param($stmt, "s", $username);
 mysqli_stmt_execute($stmt);
 $result = mysqli_stmt_get_result($stmt);
 
 if (!$result) {
+
     echo json_encode(array("error" => "Name check query failed"));
     exit();
 }

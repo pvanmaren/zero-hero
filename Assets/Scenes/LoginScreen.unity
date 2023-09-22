@@ -538,7 +538,7 @@ MonoBehaviour:
   nameField: {fileID: 1020325868}
   passwordField: {fileID: 1394943345}
   submitButton: {fileID: 1795107532}
-  appData: {fileID: 0}
+  appData: {fileID: 11400000, guid: a597cd39747ded44ab707113e8b8002e, type: 2}
 --- !u!1 &319382934
 GameObject:
   m_ObjectHideFlags: 0
