@@ -17,25 +17,26 @@ public class Regestartion : MonoBehaviour
     {
         string output = nameField.text + ", " + functionField.text + ", " + emailField.text + ", " + passwordField.text;
         print(output);
-        //StartCoroutine(GetRegister());
+        StartCoroutine(GetRegister());
     }
 
 
     private IEnumerator GetRegister()
     {
-        List<IMultipartFormSection> formData = new List<IMultipartFormSection>();
-        formData.Add(new MultipartFormDataSection("name", nameField.text));
-        formData.Add(new MultipartFormDataSection("function", functionField.text));
-        formData.Add(new MultipartFormDataSection("email", emailField.text));
-        formData.Add(new MultipartFormDataSection("password", passwordField.text));
+        WWWForm form = new WWWForm();
+        form.AddField("name", nameField.text);
+        form.AddField("function", functionField.text);
+        form.AddField("email", emailField.text);
+        form.AddField("password", passwordField.text);
 
-        UnityWebRequest www = UnityWebRequest.Post("http://localhost/sqlconnect/register.php", formData);
+        UnityWebRequest www = UnityWebRequest.Post("http://localhost/sqlconnect/register.php", form);
+
         yield return www.SendWebRequest();
 
         if (www.result == UnityWebRequest.Result.Success)
         {
             Debug.Log("User successfully created.");
-            /*UnityEngine.SceneManagement.SceneManager.LoadScene(4);*/
+            UnityEngine.SceneManagement.SceneManager.LoadScene(4);
         }
         else
         {
