@@ -10,8 +10,8 @@ using TMPro;
 
 public class Calendar : MonoBehaviour
 {
-
     [SerializeField] private ReservationsInsert reservationsInsert;
+    [SerializeField] private UpdateReservation updateReservation;
     [SerializeField] private TMP_Text monthText;
     [SerializeField] private TMP_Text yearText;
     [SerializeField] private TMP_Text date;
@@ -37,97 +37,24 @@ public class Calendar : MonoBehaviour
     private int currentMonth;
     private int currentDay;
     private int currentYear;
-    private string credentialPath;
     private string plannedDate;
     private string plannedTime;
     private string[] dateTime;
     private string[] reservedTime;
-
-    [System.Serializable]
-    private class Reservation
-    {
-        public int id;
-        public string pointA;
-        public string pointB;
-        public string startDateTime;
-        public string endDateTime;
-        public int user_id;
-    }
-
-    [System.Serializable]
-    private class Reservations
-    {
-        public Reservation[] reservations;
-    }
-
+    private string[] allReservations;
     private void Start()
     {
-        // Path to the json file
-        credentialPath = Application.dataPath + "/credentials/reservations.json";
+        print("Start calendar");
+        updateReservation.GetReservationData();
+        allReservations = appData.GetAllReservation();
+        //foreach (string dateTime in allReservations) { print(dateTime); }
+
         // Set initial month and year
         currentMonth = System.DateTime.Now.Month;
         currentYear = System.DateTime.Now.Year;
         // Opens the calendar display
         OpenCalendar();
-        
     }
-
-
-    /*IEnumerator GetAllReservations()
-    {
-      
-
-        List<IMultipartFormSection> formData = new List<IMultipartFormSection>();
-        formData.Add(new MultipartFormDataSection("name", nameField.text));
-        formData.Add(new MultipartFormDataSection("password", passwordField.text));
-
-        using (UnityWebRequest www = UnityWebRequest.Post("http://localhost/sqlconnect/login.php", formData))
-        {
-            yield return www.SendWebRequest();
-
-            if (www.result == UnityWebRequest.Result.Success)
-            {
-                string responseText = www.downloadHandler.text;
-                string[] responseTextSplitter = responseText.Split("{");
-                string[] responseTextSplit = responseText.Split('"');
-                if (responseTextSplitter.Length > 2)
-                {
-                    userData = responseTextSplitter[^1];
-                }
-
-                string responseStatus = responseTextSplit[1];
-                string responseErrorMsg = responseTextSplit[3];
-
-                if (responseStatus == "success")
-                {
-                    int userId = int.Parse(userData.Split(",")[0].Split(":")[1]);
-                    string fullName = userData.Split(",")[5].Split('"')[3];
-                    string function = userData.Split(",")[4].Split('"')[3];
-
-                    //saves the users data localy
-                    appData.SetLoginId(userId);
-                    appData.SetUserFullName(fullName);
-                    appData.SetUserFunction(function);
-
-                    // Login successful
-                    DBManager.username = nameField.text;
-                    Debug.Log("Login successful!");
-                    UnityEngine.SceneManagement.SceneManager.LoadScene("HomeScreen");
-                }
-                else
-                {
-                    // Login failed
-                    Debug.LogError("Login failed: " + responseErrorMsg);
-                }
-            }
-            else
-            {
-                // Handle network errors
-                Debug.LogError("Network error: " + www.error);
-            }
-        }
-    }*/
-
 
     public void GoToHome()
     {
@@ -183,9 +110,7 @@ public class Calendar : MonoBehaviour
     {
         date.text = " ";
         appData.SetViewReservation(0);
-        // Reads the JSON file and turns it into a string
-        string JSONstring = File.ReadAllText(credentialPath);
-        Reservations reservations = JsonUtility.FromJson<Reservations>(JSONstring);
+
         // Update month and year text
         monthText.text = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(currentMonth);
         yearText.text = currentYear.ToString();
@@ -216,10 +141,9 @@ public class Calendar : MonoBehaviour
                 {
                     dayDisplay.color = Color.blue;
                 }
-                // Loops through the json objects
-                foreach (Reservation reservation in reservations.reservations)
+                foreach (string reservation in allReservations)
                 {
-                    dateTime = reservation.startDateTime.Split("-");
+                    dateTime = reservation.Split("-");
                     if (currentMonth == int.Parse(dateTime[1]))
                     {
                         if (day == int.Parse(dateTime[0]))
@@ -267,10 +191,6 @@ public class Calendar : MonoBehaviour
 
     private void UpdateTime(int day, string date)
     {
-        // Reads the JSON file and turns it into a string
-        string JSONstring = File.ReadAllText(credentialPath);
-        Reservations reservations = JsonUtility.FromJson<Reservations>(JSONstring);
-
         DateTime startTime = DateTime.Today.AddHours(8);
         List<DateTime> timeSlots = new List<DateTime>();
         while (startTime.Hour < 19)
@@ -288,11 +208,10 @@ public class Calendar : MonoBehaviour
             startReservationTime.color = Color.black;
             endReservationTime.color = Color.black;
             string clickedTime = timeSlots[i].ToString("HH:mm") + " - " + timeSlots[i+1].ToString("HH:mm");
-            // Loops through the json objects
             timeButtons[i].onClick.AddListener(() => OpenConfirmation(date, clickedTime));
-            foreach (Reservation reservation in reservations.reservations)
+            foreach (string reservation in allReservations)
             {
-                dateTime = reservation.startDateTime.Split("-");
+                dateTime = reservation.Split("-");
                 reservedTime = dateTime[2].Split(" ");
                 if (day == int.Parse(dateTime[0]))
                 {
@@ -349,7 +268,6 @@ public class Calendar : MonoBehaviour
         plannedDate = pickedDate;
         plannedTime = pickedTime;
 
-        credentialPath = Application.dataPath + "/credentials/reservations.json";
         reserveButton.onClick.AddListener(Reserve);
         UpdateLocations();
     }
@@ -365,6 +283,6 @@ public class Calendar : MonoBehaviour
         string startDateTime = currentDay +"-"+ currentMonth + "-" + currentYear + " " + plannedTime.Split("-")[0];
         string endDateTime = currentDay +"-"+ currentMonth + "-" + currentYear + " " + plannedTime.Split("-")[1];
         reservationsInsert.CallReserve(appData.GetLoginId(), startLocationInput.text, endLocationInput.text, startDateTime, endDateTime);
-        SceneManager.LoadScene("ReservationScreen");
+        SceneManager.LoadScene("HomeScreen");
     }
 }

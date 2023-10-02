@@ -40,7 +40,7 @@ public class Regestartion : MonoBehaviour
         if (www.result == UnityWebRequest.Result.Success)
         {
             Debug.Log("User successfully created.");
-            UnityEngine.SceneManagement.SceneManager.LoadScene(5);
+            UnityEngine.SceneManagement.SceneManager.LoadScene("LoginScreen");
         }
         else
         {

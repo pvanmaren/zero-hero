@@ -28,7 +28,6 @@ public class ReservationsInsert : MonoBehaviour
         if (www.result == UnityWebRequest.Result.Success)
         {
             string responseText = www.downloadHandler.text;
-            print(responseText);
             Debug.Log("Successfull reservation");
         }
         else

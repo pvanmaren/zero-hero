@@ -8,6 +8,7 @@ public class AppData : ScriptableObject
     public string errorMsg = "";
     public bool openMenu = false;
     public int viewReservation;
+    public string[] allReservations;
 
     //login
     public int GetLoginId()
@@ -76,6 +77,24 @@ public class AppData : ScriptableObject
     public void SetViewReservation(int reservation)
     {
         viewReservation = reservation;
+
+    }
+
+    //array for all reservations
+    public string[] GetAllReservation()
+    {
+        return allReservations;
+    }
+
+    public void SetAllReservation(string[] reservation)
+    {
+        allReservations = reservation;
+
+    }
+
+    public void ClearAllReservation()
+    {
+        allReservations = new string[0];
 
     }
 

@@ -38,7 +38,6 @@ public class Calendar1 : MonoBehaviour
     private int currentMonth;
     private int currentDay;
     private int currentYear;
-    private int previousId;
     private string credentialPath;
     private string plannedDate;
     private string plannedTime;
@@ -315,42 +314,6 @@ public class Calendar1 : MonoBehaviour
         string endDateTime = currentDay +"-"+ currentMonth + "-" + currentYear + " " + plannedTime.Split("-")[1];
 
         reservationsInsert.CallReserve(appData.GetLoginId(), startLocationInput.text, endLocationInput.text, startDateTime, endDateTime);
-
-        /*        string JSONstring = File.ReadAllText(credentialPath);
-                Reservations reservations = JsonUtility.FromJson<Reservations>(JSONstring);
-
-                // Loops through the json objects
-                foreach (Reservation reservation in reservations.reservations)
-                {
-                    previousId = reservation.id;
-                }
-
-                // Calculates new id 
-                int newId = previousId + 1;
-
-                // New Reservation
-                Reservation newReservation = new Reservation
-                {
-                    id = newId,
-                    pointA = startLocationInput.text,
-                    pointB = endLocationInput.text,
-                    startDateTime = startDateTime,
-                    endDateTime = endDateTime,
-                    paused = false,
-                    user_id = appData.GetLoginId()
-                };
-
-                // Makes the array bigger by resizing it
-                Array.Resize(ref reservations.reservations, reservations.reservations.Length + 1);
-                // Places the new reservation
-                reservations.reservations[^1] = newReservation;
-
-                // Convert the updated list or array to JSON
-                string updatedJsonData = JsonUtility.ToJson(reservations, true);
-
-                // Write the updated JSON data back to the file
-                File.WriteAllText(credentialPath, updatedJsonData);
-        */
         SceneManager.LoadScene("ReservationScreen");
     }
 }
