@@ -49,26 +49,32 @@ public class RecentReservations : MonoBehaviour
                 string[] dataSplitter = responseText.Split("{");
 
                 string upcommingDataRaw = dataSplitter[2];
+
                 string upcommingPointA = upcommingDataRaw.Split('"')[7];
                 string upcommingPointB = upcommingDataRaw.Split('"')[11];
                 string upcommingDate = upcommingDataRaw.Split('"')[15].Split(" ")[0];
                 string upcommingTime = upcommingDataRaw.Split('"')[15].Split(" ")[1];
 
-                string nextDataRaw = dataSplitter[3];
-                string nextPointA = nextDataRaw.Split('"')[7];
-                string nextPointB = nextDataRaw.Split('"')[11];
-                string nextDate = nextDataRaw.Split('"')[15].Split(" ")[0];
-                string nextTime = nextDataRaw.Split('"')[15].Split(" ")[1];
-
                 upcommingReservationDisplayDate.text = upcommingDate;
                 upcommingReservationDisplayTime.text = upcommingTime;
                 upcommingReservationDisplayPointA.text = upcommingPointA;
                 upcommingReservationDisplayPointB.text = upcommingPointB;
+
+                if (dataSplitter.Length > 3)
+                {
+                    string nextDataRaw = dataSplitter[3];
+                    string nextPointA = nextDataRaw.Split('"')[7];
+                    string nextPointB = nextDataRaw.Split('"')[11];
+                    string nextDate = nextDataRaw.Split('"')[15].Split(" ")[0];
+                    string nextTime = nextDataRaw.Split('"')[15].Split(" ")[1];
+
+                    nextReservationDisplayDate.text = nextDate;
+                    nextReservationDisplayTime.text = nextTime;
+                    nextReservationDisplayPointA.text = nextPointA;
+                    nextReservationDisplayPointB.text = nextPointB;
+                }
+
                 
-                nextReservationDisplayDate.text = nextDate;
-                nextReservationDisplayTime.text = nextTime;
-                nextReservationDisplayPointA.text = nextPointA;
-                nextReservationDisplayPointB.text = nextPointB;
             }
             else
             {
