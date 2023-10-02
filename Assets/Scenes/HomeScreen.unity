@@ -7107,7 +7107,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2013454377
 GameObject:
@@ -7195,6 +7195,59 @@ Transform:
   m_Children:
   - {fileID: 128264859}
   - {fileID: 1160449877}
+  m_Father: {fileID: 0}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2058996759
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2058996761}
+  - component: {fileID: 2058996760}
+  m_Layer: 0
+  m_Name: ViewReservations
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2058996760
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2058996759}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e5a7a061989fb3f41b7cfbfbb8addbf3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  appData: {fileID: 11400000, guid: a597cd39747ded44ab707113e8b8002e, type: 2}
+  upcommingReservationDisplayDate: {fileID: 1177604524}
+  upcommingReservationDisplayTime: {fileID: 1877045593}
+  upcommingReservationDisplayPointA: {fileID: 1182497686}
+  upcommingReservationDisplayPointB: {fileID: 652282743}
+  nextReservationDisplayDate: {fileID: 1660187401}
+  nextReservationDisplayTime: {fileID: 1235936293}
+  nextReservationDisplayPointA: {fileID: 1104822590}
+  nextReservationDisplayPointB: {fileID: 228517924}
+--- !u!4 &2058996761
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2058996759}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 40.38565, y: 920.28925, z: 20.791096}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

@@ -9,6 +9,7 @@ public class AppData : ScriptableObject
     public bool openMenu = false;
     public int viewReservation;
     public string[] allReservations;
+    public int totalReservations;
 
     //login
     public int GetLoginId()
@@ -19,7 +20,16 @@ public class AppData : ScriptableObject
     public void SetLoginId(int loginIdInt)
     {
         loginId = loginIdInt;
+    }
+    
+    public int GetTotalReservations()
+    {
+        return totalReservations;
+    }
 
+    public void SetTotalReservations(int reservationInt)
+    {
+        totalReservations = reservationInt;
     }
 
     //users full name
