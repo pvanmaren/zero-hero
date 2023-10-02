@@ -574,7 +574,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: -22.943, y: -281.34003}
+  m_AnchoredPosition: {x: 3, y: -281.34003}
   m_SizeDelta: {x: 333.3353, y: 306.42847}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &319382936
@@ -838,6 +838,7 @@ GameObject:
   - component: {fileID: 1020325870}
   - component: {fileID: 1020325869}
   - component: {fileID: 1020325868}
+  - component: {fileID: 1020325871}
   m_Layer: 5
   m_Name: EmailInput
   m_TagString: Untagged
@@ -934,7 +935,19 @@ MonoBehaviour:
       m_Calls: []
   m_OnSelect:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1020325871}
+        m_TargetAssemblyTypeName: OpenKeyboard, Assembly-CSharp
+        m_MethodName: Keyboard
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_OnDeselect:
     m_PersistentCalls:
       m_Calls: []
@@ -1003,6 +1016,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1020325866}
   m_CullTransparentMesh: 1
+--- !u!114 &1020325871
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1020325866}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2fd2538cdca6a264d99568698cbac92b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inputField: {fileID: 1020325868}
 --- !u!1 &1202716407
 GameObject:
   m_ObjectHideFlags: 0
@@ -1541,6 +1567,7 @@ GameObject:
   - component: {fileID: 1394943348}
   - component: {fileID: 1394943347}
   - component: {fileID: 1394943345}
+  - component: {fileID: 1394943349}
   m_Layer: 5
   m_Name: Passwordinput
   m_TagString: Untagged
@@ -1615,7 +1642,19 @@ MonoBehaviour:
       m_Calls: []
   m_OnSelect:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1394943349}
+        m_TargetAssemblyTypeName: OpenKeyboard, Assembly-CSharp
+        m_MethodName: Keyboard
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_OnDeselect:
     m_PersistentCalls:
       m_Calls: []
@@ -1706,6 +1745,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1394943344}
   m_CullTransparentMesh: 1
+--- !u!114 &1394943349
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1394943344}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2fd2538cdca6a264d99568698cbac92b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inputField: {fileID: 1394943345}
 --- !u!1 &1431277639
 GameObject:
   m_ObjectHideFlags: 0

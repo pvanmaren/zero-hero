@@ -12,7 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eee85daa90975f14596d69f29fbbab44, type: 3}
   m_Name: AppData
   m_EditorClassIdentifier: 
-  loginId: 3
+  loginId: 8
+  userFullName: Gianni admin
+  userFunction: admin
   errorMsg: 
   openMenu: 1
   viewReservation: 0

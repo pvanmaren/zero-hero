@@ -13,6 +13,10 @@ public class Login : MonoBehaviour
     [SerializeField] private AppData appData;
 
     private string userData;
+    public void Start()
+    {
+        passwordField.contentType = TMP_InputField.ContentType.Password;
+    }
 
     public void CallLogin()
     {
@@ -61,7 +65,7 @@ public class Login : MonoBehaviour
                     appData.SetUserFunction(function);
 
                     // Login successful
-                    DBManager.username = nameField.text;
+                    /*DBManager.username = nameField.text;*/
                     Debug.Log("Login successful!");
                     UnityEngine.SceneManagement.SceneManager.LoadScene("HomeScreen");
                 }
@@ -78,10 +82,10 @@ public class Login : MonoBehaviour
             }
         }
     }
-
     public void VerifyInputs()
     {
         // Enable the submit button if both fields have at least 8 characters
         submitButton.interactable = (nameField.text.Length >= 8 && passwordField.text.Length >= 8);
     }
+    
 }

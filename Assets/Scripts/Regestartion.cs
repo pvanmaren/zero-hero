@@ -13,6 +13,10 @@ public class Regestartion : MonoBehaviour
     [SerializeField] private TMP_InputField passwordField;
     [SerializeField] private Button submitButton;
 
+    public void Start()
+    {
+        passwordField.contentType = TMP_InputField.ContentType.Password;
+    }
     public void CallRegister()
     {
         string output = nameField.text + ", " + functionField.text + ", " + emailField.text + ", " + passwordField.text;

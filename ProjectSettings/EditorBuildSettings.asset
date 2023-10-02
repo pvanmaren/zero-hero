@@ -20,16 +20,16 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/ReservationScreen.unity
     guid: 3706837345722904792994d24e5d95b9
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Main.unity
     guid: 72de01ee8c4c278459d7e18b5ba92cbb
   - enabled: 1
     path: Assets/Scenes/LoginScreen.unity
     guid: abe985c25106ee34fb863f7523e856c3
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Login.unity
     guid: b44150e9f0bdafc4db85f2edcccbce6b
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Register.unity
     guid: 564665b6e6330e74581c75bd94e9a2d8
   m_configObjects: {}
