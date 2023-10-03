@@ -42,6 +42,7 @@ public class Calendar : MonoBehaviour
     private string[] dateTime;
     private string[] reservedTime;
     private string[] allReservations;
+
     private void Start()
     {
         print("Start calendar");
@@ -54,6 +55,7 @@ public class Calendar : MonoBehaviour
         currentYear = System.DateTime.Now.Year;
         // Opens the calendar display
         OpenCalendar();
+        UpdateCalendar();
     }
 
     public void GoToHome()
