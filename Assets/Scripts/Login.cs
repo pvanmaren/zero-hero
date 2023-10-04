@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using TMPro;
 
@@ -16,6 +17,11 @@ public class Login : MonoBehaviour
     public void Start()
     {
         passwordField.contentType = TMP_InputField.ContentType.Password;
+    }
+
+    public void OpenRegistration()
+    {
+        SceneManager.LoadScene("RegistrationScreen");
     }
 
     public void CallLogin()

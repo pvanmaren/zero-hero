@@ -17,13 +17,19 @@ public class Regestartion : MonoBehaviour
     {
         passwordField.contentType = TMP_InputField.ContentType.Password;
     }
+
+    public void OpenLogin()
+    {
+        UnityEngine.SceneManagement.SceneManager.LoadScene("LoginScreen");
+
+    }
+
     public void CallRegister()
     {
         string output = nameField.text + ", " + functionField.text + ", " + emailField.text + ", " + passwordField.text;
         print(output);
         StartCoroutine(GetRegister());
     }
-
 
     private IEnumerator GetRegister()
     {
@@ -40,7 +46,7 @@ public class Regestartion : MonoBehaviour
         if (www.result == UnityWebRequest.Result.Success)
         {
             Debug.Log("User successfully created.");
-            UnityEngine.SceneManagement.SceneManager.LoadScene("LoginScreen");
+            OpenLogin();
         }
         else
         {

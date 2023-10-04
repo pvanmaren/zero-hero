@@ -19,7 +19,7 @@ public class moveLogo : MonoBehaviour
         {
             aValue = 1;
         }
-        else if (sceneName == "LoginScreen")
+        else if (sceneName == "LoginScreen" || sceneName == "RegistrationScreen")
         {
             aValue = 0;
 
@@ -40,7 +40,7 @@ public class moveLogo : MonoBehaviour
                 SceneManager.LoadScene("LoginScreen", LoadSceneMode.Single);
             }
         }
-        else if (sceneName == "LoginScreen")
+        else if (sceneName == "LoginScreen" || sceneName == "RegistrationScreen")
         {
             aValue += Time.deltaTime;
             logo.color = new Color(255, 255, 255, aValue);
