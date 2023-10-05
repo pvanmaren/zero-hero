@@ -7,11 +7,14 @@ using TMPro;
 
 public class Regestartion : MonoBehaviour
 {
+    [SerializeField] private TMP_Text errorMsg;
     [SerializeField] private TMP_InputField nameField;
     [SerializeField] private TMP_InputField functionField;
     [SerializeField] private TMP_InputField emailField;
     [SerializeField] private TMP_InputField passwordField;
     [SerializeField] private Button submitButton;
+    [SerializeField] private AppData appData;
+
 
     public void Start()
     {
@@ -27,9 +30,20 @@ public class Regestartion : MonoBehaviour
 
     public void CallRegister()
     {
-        string output = nameField.text + ", " + functionField.text + ", " + emailField.text + ", " + passwordField.text;
-        print(output);
-        StartCoroutine(GetRegister());
+
+
+        if (nameField.text.Length > 0 && functionField.text.Length > 0 && emailField.text.Length > 0 && passwordField.text.Length > 0)
+        {
+            errorMsg.color = Color.black;
+            errorMsg.text = "Welkom";
+            StartCoroutine(GetRegister());
+
+        }
+        else
+        {
+            errorMsg.color = Color.red;
+            errorMsg.text = "Field empty";
+        }
     }
 
     private IEnumerator GetRegister()
@@ -47,16 +61,12 @@ public class Regestartion : MonoBehaviour
         if (www.result == UnityWebRequest.Result.Success)
         {
             Debug.Log("User successfully created.");
+            appData.SetFlashMsg("User created");
             OpenLogin();
         }
         else
         {
             Debug.Log("It failed. Error: " + www.error);
         }
-    }
-
-    public void verifyInputs()
-    {
-        submitButton.interactable = true;
     }
 }

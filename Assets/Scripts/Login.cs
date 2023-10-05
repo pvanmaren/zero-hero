@@ -18,6 +18,16 @@ public class Login : MonoBehaviour
     {
         nameField.contentType = TMP_InputField.ContentType.EmailAddress;
         passwordField.contentType = TMP_InputField.ContentType.Password;
+
+        if (appData.GetFlashMsg() == "User created")
+        {
+            errorMsg.color = Color.green;
+            errorMsg.text = appData.GetFlashMsg();
+        }
+        else {
+            errorMsg.color = Color.black;
+            errorMsg.text = "Welkom";
+        }
     }
 
     public void OpenRegistration()
