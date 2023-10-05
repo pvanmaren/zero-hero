@@ -19,13 +19,12 @@ mysqli_stmt_execute($stmt);
 $result = mysqli_stmt_get_result($stmt);
 
 if (!$result) {
-
     echo json_encode(array("error" => "Name check query failed"));
     exit();
 }
 
 if (mysqli_num_rows($result) != 1) {
-    echo json_encode(array("error" => "Username not found"));
+    echo json_encode(array("error" => "Email not found"));
     exit();
 }
 
