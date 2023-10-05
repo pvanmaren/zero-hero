@@ -11,7 +11,6 @@ using TMPro;
 public class Calendar : MonoBehaviour
 {
     [SerializeField] private ReservationsInsert reservationsInsert;
-    [SerializeField] private UpdateReservation updateReservation;
     [SerializeField] private TMP_Text monthText;
     [SerializeField] private TMP_Text yearText;
     [SerializeField] private TMP_Text date;
@@ -33,36 +32,29 @@ public class Calendar : MonoBehaviour
     [SerializeField] private GameObject confirmationPrompt;
     [SerializeField] private GameObject locations;
     private List<Button> reservedTimeButton = new List<Button>();
-
     private int currentMonth;
     private int currentDay;
     private int currentYear;
+    private int selectedDay;
     private string plannedDate;
     private string plannedTime;
     private string[] dateTime;
     private string[] reservedTime;
     private string[] allReservations;
-
     private void Start()
     {
-        print("Start calendar");
-        updateReservation.GetReservationData();
         allReservations = appData.GetAllReservation();
-        //foreach (string dateTime in allReservations) { print(dateTime); }
-
-        // Set initial month and year
+        // Set current day, month and year
         currentMonth = System.DateTime.Now.Month;
         currentYear = System.DateTime.Now.Year;
+        currentDay = System.DateTime.Now.Day;
         // Opens the calendar display
         OpenCalendar();
-        UpdateCalendar();
     }
-
     public void GoToHome()
     {
         SceneManager.LoadScene("HomeScreen");
     }
-
     public void OpenCalendar()
     {
         //reset variables
@@ -79,7 +71,6 @@ public class Calendar : MonoBehaviour
         locations.SetActive(false);
         UpdateCalendar();
     }
-
     public void NextMonth()
     {
         // Increment the current month
@@ -93,7 +84,6 @@ public class Calendar : MonoBehaviour
         // Update calendar display
         UpdateCalendar();
     }
-
     public void PreviousMonth()
     {
         // Decrement the current month
@@ -107,7 +97,6 @@ public class Calendar : MonoBehaviour
         // Update calendar display
         UpdateCalendar();
     }
-
     private void UpdateCalendar()
     {
         date.text = " ";
@@ -130,16 +119,16 @@ public class Calendar : MonoBehaviour
         // Update day texts
         for (int i = 0; i < dayButtons.Length; i++)
         {
+
             // The text that displays the days
             TMP_Text dayDisplay = dayButtons[i].GetComponentInChildren<TMP_Text>();
             if (i >= startDay && i < startDay + numDays)
             {
                 int day = i - startDay + 1;
-                int today = System.DateTime.Now.Day;
                 dayDisplay.text = day.ToString();
                 dayDisplay.gameObject.SetActive(true);
                 // This if statement makes the current day turn blue
-                if (day == today)
+                if (day == currentDay)
                 {
                     dayDisplay.color = Color.blue;
                 }
@@ -152,28 +141,37 @@ public class Calendar : MonoBehaviour
                         {
                             dayDisplay.color = Color.red;
                         }
-                        if (day == today)
+                        if (day == currentDay)
                         {
-                            if (today == int.Parse(dateTime[0]))
+                            if (currentDay == int.Parse(dateTime[0]))
                             {
                                 dayDisplay.color = Color.magenta;
                             }
                         }
                     }
                 }
-                // Add an onClick event handler
-                int clickedDay = day; // Capture the day value in a local variable
-                dayButtons[i].onClick.RemoveAllListeners();
-                dayButtons[i].onClick.AddListener(() => OpenTime(clickedDay, CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(currentMonth)));
+
+                dayButtons[i].onClick.AddListener(() => OpenTime(day, CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(currentMonth)));
+                
+                if (day < currentDay)
+                {
+                    dayDisplay.color = Color.red;
+                    dayButtons[i].onClick.RemoveAllListeners();
+                }
+                
             }
-            else
+            // Checks if it's saturday or sunday
+            if (i % 7 == 6 || i % 7 == 5)
             {
-                dayDisplay.gameObject.SetActive(false);
+                dayDisplay.color = Color.red;
+                dayButtons[i].onClick.RemoveAllListeners();
             }
+
         }
     }
-    private void OpenTime(int clickedDay, string month)
+    public void OpenTime(int clickedDay, string month)
     {
+        exitButton.SetActive(false);
         appData.SetViewReservation(clickedDay);
         // Deactivates gameobjects
         calender.SetActive(false);
@@ -187,13 +185,13 @@ public class Calendar : MonoBehaviour
         // Creates a string with the current date
         string currentDate = clickedDay.ToString() + " " + month.ToUpper();
         date.text = currentDate;
-        currentDay = clickedDay;
+        selectedDay = clickedDay;
         UpdateTime(clickedDay, currentDate);
     }
-
     private void UpdateTime(int day, string date)
     {
         DateTime startTime = DateTime.Today.AddHours(8);
+        int currentHour = DateTime.Now.Hour;
         List<DateTime> timeSlots = new List<DateTime>();
         while (startTime.Hour < 19)
         {
@@ -203,6 +201,7 @@ public class Calendar : MonoBehaviour
 
         for (int i = 0; i < timeButtons.Length; i++)
         {
+
             TMP_Text startReservationTime = timeButtons[i].transform.Find("Text (TMP)").GetComponent<TMP_Text>();
             TMP_Text endReservationTime = timeButtons[i].transform.Find("Text (TMP) (1)").GetComponent<TMP_Text>();
             startReservationTime.text = timeSlots[i].ToString("HH:mm");
@@ -223,11 +222,24 @@ public class Calendar : MonoBehaviour
                         endReservationTime.color = Color.red;
                         timeButtons[i].onClick.RemoveAllListeners();
                     }
+
                 }
             }
+
+            if (day == currentDay)
+            {
+                if (int.Parse(timeSlots[i].ToString("HH:mm").Split(":")[0]) < currentHour)
+                {
+                    startReservationTime.color = Color.red;
+                    endReservationTime.color = Color.red;
+                    timeButtons[i].onClick.RemoveAllListeners();
+
+                }
+            }
+
+
         }
     }
-
     private void OpenConfirmation(string clickedDate, string clickedTime)
     {
         // Deactivates gameobjects
@@ -240,7 +252,6 @@ public class Calendar : MonoBehaviour
 
         UpdateConfirmation(clickedDate, clickedTime);
     }
-
     private void UpdateConfirmation(string plannedDate, string plannedTime)
     {
         promptDate.text = plannedDate;
@@ -255,7 +266,6 @@ public class Calendar : MonoBehaviour
         });
 
     }
-
     private void OpenLocation(string pickedDate, string pickedTime)
     {
         // Deactivates gameobjects
@@ -273,17 +283,15 @@ public class Calendar : MonoBehaviour
         reserveButton.onClick.AddListener(Reserve);
         UpdateLocations();
     }
-
     private void UpdateLocations()
     {
         ReserveDate.text = plannedDate;
         ReserveTime.text = plannedTime;
     }
-
     private void Reserve()
     {
-        string startDateTime = currentDay +"-"+ currentMonth + "-" + currentYear + " " + plannedTime.Split("-")[0];
-        string endDateTime = currentDay +"-"+ currentMonth + "-" + currentYear + " " + plannedTime.Split("-")[1];
+        string startDateTime = selectedDay + "-"+ currentMonth + "-" + currentYear + " " + plannedTime.Split("-")[0];
+        string endDateTime = selectedDay + "-"+ currentMonth + "-" + currentYear + " " + plannedTime.Split("-")[1];
         reservationsInsert.CallReserve(appData.GetLoginId(), startLocationInput.text, endLocationInput.text, startDateTime, endDateTime);
         SceneManager.LoadScene("HomeScreen");
     }
