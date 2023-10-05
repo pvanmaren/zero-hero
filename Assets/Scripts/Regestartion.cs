@@ -7,7 +7,7 @@ using TMPro;
 
 public class Regestartion : MonoBehaviour
 {
-    [SerializeField]private TMP_InputField nameField;
+    [SerializeField] private TMP_InputField nameField;
     [SerializeField] private TMP_InputField functionField;
     [SerializeField] private TMP_InputField emailField;
     [SerializeField] private TMP_InputField passwordField;
@@ -15,6 +15,7 @@ public class Regestartion : MonoBehaviour
 
     public void Start()
     {
+        emailField.contentType = TMP_InputField.ContentType.EmailAddress;
         passwordField.contentType = TMP_InputField.ContentType.Password;
     }
 
@@ -54,8 +55,8 @@ public class Regestartion : MonoBehaviour
         }
     }
 
-  /*  public void verifyInputs()
+    public void verifyInputs()
     {
-        submitButton.interactable = (nameField.text.Length >= 8 && passwordField.text.Length >= 8);
-    }*/
+        submitButton.interactable = true;
+    }
 }
