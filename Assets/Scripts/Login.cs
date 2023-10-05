@@ -8,14 +8,15 @@ using TMPro;
 
 public class Login : MonoBehaviour
 {
-    public TMP_InputField nameField;
-    public TMP_InputField passwordField;
-    public Button submitButton;
+    [SerializeField] private TMP_Text errorMsg;
+    [SerializeField] private TMP_InputField nameField;
+    [SerializeField] private TMP_InputField passwordField;
+    [SerializeField] private Button submitButton;
     [SerializeField] private AppData appData;
-
     private string userData;
     public void Start()
     {
+        nameField.contentType = TMP_InputField.ContentType.EmailAddress;
         passwordField.contentType = TMP_InputField.ContentType.Password;
     }
 
@@ -31,13 +32,6 @@ public class Login : MonoBehaviour
 
     IEnumerator LoginUser()
     {
-        // Ensure the inputs are not empty
-        if (string.IsNullOrEmpty(nameField.text) || string.IsNullOrEmpty(passwordField.text))
-        {
-            Debug.LogError("Username and password cannot be empty.");
-            yield break;
-        }
-
         List<IMultipartFormSection> formData = new List<IMultipartFormSection>();
         formData.Add(new MultipartFormDataSection("name", nameField.text));
         formData.Add(new MultipartFormDataSection("password", passwordField.text));
@@ -79,6 +73,8 @@ public class Login : MonoBehaviour
                 {
                     // Login failed
                     Debug.LogError("Login failed: " + responseErrorMsg);
+                    errorMsg.color = Color.red;
+                    errorMsg.text = responseErrorMsg;
                 }
             }
             else
@@ -91,7 +87,7 @@ public class Login : MonoBehaviour
     public void VerifyInputs()
     {
         // Enable the submit button if both fields have at least 8 characters
-        submitButton.interactable = (nameField.text.Length >= 8 && passwordField.text.Length >= 8);
+        submitButton.interactable = true;
     }
     
 }
