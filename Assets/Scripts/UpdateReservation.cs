@@ -53,7 +53,7 @@ public class UpdateReservation : MonoBehaviour
                 else
                 {
                     // Login failed
-                    Debug.LogError("Login failed: " + responseErrorMsg);
+                    Debug.LogError("error: " + responseErrorMsg);
                 }
             }
             else

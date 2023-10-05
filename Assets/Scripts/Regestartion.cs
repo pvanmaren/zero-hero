@@ -25,13 +25,10 @@ public class Regestartion : MonoBehaviour
     public void OpenLogin()
     {
         UnityEngine.SceneManagement.SceneManager.LoadScene("LoginScreen");
-
     }
 
     public void CallRegister()
     {
-
-
         if (nameField.text.Length > 0 && functionField.text.Length > 0 && emailField.text.Length > 0 && passwordField.text.Length > 0)
         {
             errorMsg.color = Color.black;

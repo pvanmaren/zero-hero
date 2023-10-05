@@ -16,5 +16,8 @@ MonoBehaviour:
   userFullName: Gianni admin
   userFunction: admin
   errorMsg: 
-  openMenu: 1
-  viewReservation: 0
+  openMenu: 0
+  viewReservation: 5
+  allReservations: []
+  totalReservations: 0
+  flashMsg: 
