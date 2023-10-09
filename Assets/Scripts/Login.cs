@@ -19,14 +19,22 @@ public class Login : MonoBehaviour
         nameField.contentType = TMP_InputField.ContentType.EmailAddress;
         passwordField.contentType = TMP_InputField.ContentType.Password;
 
-        if (appData.GetFlashMsg() == "User created")
+        if (appData.GetFlashMsg() != ", ")
         {
-            errorMsg.color = Color.green;
-            errorMsg.text = appData.GetFlashMsg();
-        }
-        else {
-            errorMsg.color = Color.black;
-            errorMsg.text = "Welkom";
+            string flashMsgStatus = appData.GetFlashMsg().Split(",")[0];
+            string flashMsg = appData.GetFlashMsg().Split(",")[1];
+            if (flashMsgStatus == "success")
+            {
+                errorMsg.color = Color.green;
+                errorMsg.text = flashMsg;
+                appData.SetFlashMsg("empty", "");
+            }
+            else
+            {
+                errorMsg.color = Color.black;
+                errorMsg.text = "Welkom";
+                appData.SetFlashMsg("empty", "");
+            }
         }
     }
 

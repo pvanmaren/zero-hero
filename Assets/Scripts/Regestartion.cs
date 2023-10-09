@@ -58,7 +58,7 @@ public class Regestartion : MonoBehaviour
         if (www.result == UnityWebRequest.Result.Success)
         {
             Debug.Log("User successfully created.");
-            appData.SetFlashMsg("User created");
+            appData.SetFlashMsg("success","User created");
             OpenLogin();
         }
         else

@@ -293,6 +293,8 @@ public class Calendar : MonoBehaviour
         string startDateTime = selectedDay + "-"+ currentMonth + "-" + currentYear + " " + plannedTime.Split("-")[0];
         string endDateTime = selectedDay + "-"+ currentMonth + "-" + currentYear + " " + plannedTime.Split("-")[1];
         reservationsInsert.CallReserve(appData.GetLoginId(), startLocationInput.text, endLocationInput.text, startDateTime, endDateTime);
+        appData.SetFlashMsg("success","Gerserveerd voor " + selectedDay + "-" + currentMonth + "-" + currentYear + " " + plannedTime.Split("-")[0] + " - " + plannedTime.Split("-")[1]);
+        
         SceneManager.LoadScene("HomeScreen");
     }
 }
