@@ -11,6 +11,7 @@ public class AppData : ScriptableObject
     public string[] allReservations;
     public int totalReservations;
     public string flashMsg;
+    public string flashMsgStatus = "empty";
 
     //login
     public int GetLoginId()
@@ -89,12 +90,13 @@ public class AppData : ScriptableObject
         allReservations = new string[0];
 
     }
-    public void SetFlashMsg(string msg)
+    public void SetFlashMsg(string status, string msg)
     {
+        flashMsgStatus = status;
         flashMsg = msg;
     }
     public string GetFlashMsg()
     {
-        return flashMsg ;
+        return flashMsgStatus+", " +flashMsg ;
     }
 }
