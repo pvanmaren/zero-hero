@@ -8,6 +8,7 @@ using TMPro;
 public class RecentReservations : MonoBehaviour
 {
     [SerializeField] private AppData appData;
+    [SerializeField] private DeleteReservation deleteReservation;
 
     [SerializeField] private TMP_Text upcommingReservationDisplayDate;
     [SerializeField] private TMP_Text upcommingReservationDisplayTime;
@@ -18,6 +19,11 @@ public class RecentReservations : MonoBehaviour
     [SerializeField] private TMP_Text nextReservationDisplayTime;
     [SerializeField] private TMP_Text nextReservationDisplayPointA;
     [SerializeField] private TMP_Text nextReservationDisplayPointB;
+
+    [SerializeField] private Button upcommingReservationDeleteButton;
+    [SerializeField] private Button nextReservationDeleteButton;
+
+    
 
     private void Start()
     {
@@ -49,7 +55,8 @@ public class RecentReservations : MonoBehaviour
                 string[] dataSplitter = responseText.Split("{");
 
                 string upcommingDataRaw = dataSplitter[2];
-
+             
+                string id = upcommingDataRaw.Split('"')[3];
                 string upcommingPointA = upcommingDataRaw.Split('"')[7];
                 string upcommingPointB = upcommingDataRaw.Split('"')[11];
                 string upcommingDate = upcommingDataRaw.Split('"')[15].Split(" ")[0];
@@ -59,10 +66,12 @@ public class RecentReservations : MonoBehaviour
                 upcommingReservationDisplayTime.text = upcommingTime;
                 upcommingReservationDisplayPointA.text = upcommingPointA;
                 upcommingReservationDisplayPointB.text = upcommingPointB;
+                upcommingReservationDeleteButton.onClick.AddListener(() => deleteReservation.callDeletion(id));
 
                 if (dataSplitter.Length > 3)
                 {
                     string nextDataRaw = dataSplitter[3];
+                    string nextId = nextDataRaw.Split('"')[3];
                     string nextPointA = nextDataRaw.Split('"')[7];
                     string nextPointB = nextDataRaw.Split('"')[11];
                     string nextDate = nextDataRaw.Split('"')[15].Split(" ")[0];
@@ -72,6 +81,7 @@ public class RecentReservations : MonoBehaviour
                     nextReservationDisplayTime.text = nextTime;
                     nextReservationDisplayPointA.text = nextPointA;
                     nextReservationDisplayPointB.text = nextPointB;
+                    nextReservationDeleteButton.onClick.AddListener(() => deleteReservation.callDeletion(nextId));
                 }
 
                 
