@@ -41,6 +41,7 @@ public class Calendar : MonoBehaviour
     private string[] dateTime;
     private string[] reservedTime;
     private string[] allReservations;
+    private Color notAvailable = new Color32(192, 192, 192, 255);
     private void Start()
     {
         allReservations = appData.GetAllReservation();
@@ -139,14 +140,7 @@ public class Calendar : MonoBehaviour
                     {
                         if (day == int.Parse(dateTime[0]))
                         {
-                            dayDisplay.color = Color.red;
-                        }
-                        if (day == currentDay)
-                        {
-                            if (currentDay == int.Parse(dateTime[0]))
-                            {
-                                dayDisplay.color = Color.magenta;
-                            }
+                            dayDisplay.color = notAvailable;
                         }
                     }
                 }
@@ -155,7 +149,7 @@ public class Calendar : MonoBehaviour
                 
                 if (day < currentDay)
                 {
-                    dayDisplay.color = Color.red;
+                    dayDisplay.color = notAvailable;
                     dayButtons[i].onClick.RemoveAllListeners();
                 }
                 
@@ -163,10 +157,9 @@ public class Calendar : MonoBehaviour
             // Checks if it's saturday or sunday
             if (i % 7 == 6 || i % 7 == 5)
             {
-                dayDisplay.color = Color.red;
+                dayDisplay.color = notAvailable;
                 dayButtons[i].onClick.RemoveAllListeners();
             }
-
         }
     }
     public void OpenTime(int clickedDay, string month)
@@ -209,7 +202,7 @@ public class Calendar : MonoBehaviour
             startReservationTime.color = Color.black;
             endReservationTime.color = Color.black;
             string clickedTime = timeSlots[i].ToString("HH:mm") + " - " + timeSlots[i+1].ToString("HH:mm");
-            timeButtons[i].onClick.AddListener(() => OpenConfirmation(date, clickedTime));
+            timeButtons[i].onClick.AddListener(() => OpenLocation(date, clickedTime));
             foreach (string reservation in allReservations)
             {
                 dateTime = reservation.Split("-");
@@ -218,29 +211,25 @@ public class Calendar : MonoBehaviour
                 {
                     if (timeSlots[i].ToString("HH:mm") == reservedTime[1])
                     {
-                        startReservationTime.color = Color.red;
-                        endReservationTime.color = Color.red;
+                        startReservationTime.color = notAvailable;
+                        endReservationTime.color = notAvailable;
                         timeButtons[i].onClick.RemoveAllListeners();
                     }
 
                 }
             }
-
             if (day == currentDay)
             {
                 if (int.Parse(timeSlots[i].ToString("HH:mm").Split(":")[0]) < currentHour)
                 {
-                    startReservationTime.color = Color.red;
-                    endReservationTime.color = Color.red;
+                    startReservationTime.color = notAvailable;
+                    endReservationTime.color = notAvailable;
                     timeButtons[i].onClick.RemoveAllListeners();
-
                 }
             }
-
-
         }
     }
-    private void OpenConfirmation(string clickedDate, string clickedTime)
+    /*private void OpenConfirmation(string clickedDate, string clickedTime)
     {
         // Deactivates gameobjects
         time.SetActive(false);
@@ -249,7 +238,6 @@ public class Calendar : MonoBehaviour
         exitButton.SetActive(false);
         // Activates gameobjects
         confirmationPrompt.SetActive(true);
-
         UpdateConfirmation(clickedDate, clickedTime);
     }
     private void UpdateConfirmation(string plannedDate, string plannedTime)
@@ -265,7 +253,7 @@ public class Calendar : MonoBehaviour
             time.SetActive(true); 
         });
 
-    }
+    }*/
     private void OpenLocation(string pickedDate, string pickedTime)
     {
         // Deactivates gameobjects
