@@ -51,6 +51,7 @@ public class Calendar : MonoBehaviour
         // Opens the calendar display
         OpenCalendar();
     }
+    // loads back into the homepage
     public void GoToHome()
     {
         SceneManager.LoadScene("HomeScreen");
@@ -137,13 +138,13 @@ public class Calendar : MonoBehaviour
                     dateTime = reservation.Split("-");
                     if (currentMonth == int.Parse(dateTime[1]))
                     {
-                        if (day == int.Parse(dateTime[0]))
+                        if (day == int.Parse(dateTime[0])) // makes the weekend or full days red
                         {
-                            dayDisplay.color = Color.red;
+                            dayDisplay.color = Color.magenta;
                         }
                         if (day == currentDay)
                         {
-                            if (currentDay == int.Parse(dateTime[0]))
+                            if (currentDay == int.Parse(dateTime[1]))
                             {
                                 dayDisplay.color = Color.magenta;
                             }
@@ -153,7 +154,7 @@ public class Calendar : MonoBehaviour
 
                 dayButtons[i].onClick.AddListener(() => OpenTime(day, CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(currentMonth)));
                 
-                if (day < currentDay)
+                if (day < currentDay) // checks if the day is lower than the current day, making it red
                 {
                     dayDisplay.color = Color.red;
                     dayButtons[i].onClick.RemoveAllListeners();
@@ -190,10 +191,10 @@ public class Calendar : MonoBehaviour
     }
     private void UpdateTime(int day, string date)
     {
-        DateTime startTime = DateTime.Today.AddHours(8);
+        DateTime startTime = DateTime.Today.AddHours(7);
         int currentHour = DateTime.Now.Hour;
         List<DateTime> timeSlots = new List<DateTime>();
-        while (startTime.Hour < 19)
+        while (startTime.Hour < 18)
         {
             timeSlots.Add(startTime);
             startTime = startTime.AddMinutes(60);
