@@ -8,8 +8,9 @@ using UnityEngine.SceneManagement;
 using System.Globalization;
 using TMPro;
 
-public class Calendar : MonoBehaviour
+public class Calendar1 : MonoBehaviour
 {
+
     [SerializeField] private ReservationsInsert reservationsInsert;
     [SerializeField] private TMP_Text monthText;
     [SerializeField] private TMP_Text yearText;
@@ -32,30 +33,51 @@ public class Calendar : MonoBehaviour
     [SerializeField] private GameObject confirmationPrompt;
     [SerializeField] private GameObject locations;
     private List<Button> reservedTimeButton = new List<Button>();
+
+
     private int currentMonth;
     private int currentDay;
     private int currentYear;
-    private int selectedDay;
+    private string credentialPath;
     private string plannedDate;
     private string plannedTime;
     private string[] dateTime;
     private string[] reservedTime;
-    private string[] allReservations;
+
+    [System.Serializable]
+    private class Reservation
+    {
+        public int id;
+        public string pointA;
+        public string pointB;
+        public string startDateTime;
+        public string endDateTime;
+        public bool paused;
+        public int user_id;
+    }
+
+    [System.Serializable]
+    private class Reservations
+    {
+        public Reservation[] reservations;
+    }
+
     private void Start()
     {
-        allReservations = appData.GetAllReservation();
-        // Set current day, month and year
+        // Path to the json file
+        credentialPath = Application.dataPath + "/credentials/reservations.json";
+        // Set initial month and year
         currentMonth = System.DateTime.Now.Month;
         currentYear = System.DateTime.Now.Year;
-        currentDay = System.DateTime.Now.Day;
         // Opens the calendar display
         OpenCalendar();
+        
     }
-    // loads back into the homepage
     public void GoToHome()
     {
         SceneManager.LoadScene("HomeScreen");
     }
+
     public void OpenCalendar()
     {
         //reset variables
@@ -72,6 +94,7 @@ public class Calendar : MonoBehaviour
         locations.SetActive(false);
         UpdateCalendar();
     }
+
     public void NextMonth()
     {
         // Increment the current month
@@ -85,6 +108,7 @@ public class Calendar : MonoBehaviour
         // Update calendar display
         UpdateCalendar();
     }
+
     public void PreviousMonth()
     {
         // Decrement the current month
@@ -98,11 +122,14 @@ public class Calendar : MonoBehaviour
         // Update calendar display
         UpdateCalendar();
     }
+
     private void UpdateCalendar()
     {
         date.text = " ";
         appData.SetViewReservation(0);
-
+        // Reads the JSON file and turns it into a string
+        string JSONstring = File.ReadAllText(credentialPath);
+        Reservations reservations = JsonUtility.FromJson<Reservations>(JSONstring);
         // Update month and year text
         monthText.text = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(currentMonth);
         yearText.text = currentYear.ToString();
@@ -120,59 +147,54 @@ public class Calendar : MonoBehaviour
         // Update day texts
         for (int i = 0; i < dayButtons.Length; i++)
         {
-
             // The text that displays the days
             TMP_Text dayDisplay = dayButtons[i].GetComponentInChildren<TMP_Text>();
             if (i >= startDay && i < startDay + numDays)
             {
                 int day = i - startDay + 1;
+                int today = System.DateTime.Now.Day;
                 dayDisplay.text = day.ToString();
                 dayDisplay.gameObject.SetActive(true);
                 // This if statement makes the current day turn blue
-                if (day == currentDay)
+                if (day == today)
                 {
                     dayDisplay.color = Color.blue;
                 }
-                foreach (string reservation in allReservations)
+                // Loops through the json objects
+                foreach (Reservation reservation in reservations.reservations)
                 {
-                    dateTime = reservation.Split("-");
+                    dateTime = reservation.startDateTime.Split("-");
                     if (currentMonth == int.Parse(dateTime[1]))
                     {
-                        if (day == int.Parse(dateTime[0])) // makes the weekend or full days red
+                        if (day == int.Parse(dateTime[0]))
                         {
-                            dayDisplay.color = Color.magenta;
+                            dayDisplay.color = Color.red;
                         }
-                        if (day == currentDay)
+                        if (day == today)
                         {
-                            if (currentDay == int.Parse(dateTime[1]))
+                            if (today == int.Parse(dateTime[0]))
                             {
                                 dayDisplay.color = Color.magenta;
                             }
                         }
                     }
                 }
-
-                dayButtons[i].onClick.AddListener(() => OpenTime(day, CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(currentMonth)));
-                
-                if (day < currentDay) // checks if the day is lower than the current day, making it red
-                {
-                    dayDisplay.color = Color.red;
-                    dayButtons[i].onClick.RemoveAllListeners();
-                }
-                
-            }
-            // Checks if it's saturday or sunday
-            if (i % 7 == 6 || i % 7 == 5)
-            {
-                dayDisplay.color = Color.red;
+                // Add an onClick event handler
+                int clickedDay = day; // Capture the day value in a local variable
                 dayButtons[i].onClick.RemoveAllListeners();
+                dayButtons[i].onClick.AddListener(() => OpenTime(clickedDay, CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(currentMonth)));
             }
-
+            else
+            {
+                dayDisplay.gameObject.SetActive(false);
+            }
         }
     }
-    public void OpenTime(int clickedDay, string month)
+
+
+    
+    private void OpenTime(int clickedDay, string month)
     {
-        exitButton.SetActive(false);
         appData.SetViewReservation(clickedDay);
         // Deactivates gameobjects
         calender.SetActive(false);
@@ -186,15 +208,19 @@ public class Calendar : MonoBehaviour
         // Creates a string with the current date
         string currentDate = clickedDay.ToString() + " " + month.ToUpper();
         date.text = currentDate;
-        selectedDay = clickedDay;
+        currentDay = clickedDay;
         UpdateTime(clickedDay, currentDate);
     }
+
     private void UpdateTime(int day, string date)
     {
-        DateTime startTime = DateTime.Today.AddHours(7);
-        int currentHour = DateTime.Now.Hour;
+        // Reads the JSON file and turns it into a string
+        string JSONstring = File.ReadAllText(credentialPath);
+        Reservations reservations = JsonUtility.FromJson<Reservations>(JSONstring);
+
+        DateTime startTime = DateTime.Today.AddHours(8);
         List<DateTime> timeSlots = new List<DateTime>();
-        while (startTime.Hour < 18)
+        while (startTime.Hour < 19)
         {
             timeSlots.Add(startTime);
             startTime = startTime.AddMinutes(60);
@@ -202,7 +228,6 @@ public class Calendar : MonoBehaviour
 
         for (int i = 0; i < timeButtons.Length; i++)
         {
-
             TMP_Text startReservationTime = timeButtons[i].transform.Find("Text (TMP)").GetComponent<TMP_Text>();
             TMP_Text endReservationTime = timeButtons[i].transform.Find("Text (TMP) (1)").GetComponent<TMP_Text>();
             startReservationTime.text = timeSlots[i].ToString("HH:mm");
@@ -210,10 +235,11 @@ public class Calendar : MonoBehaviour
             startReservationTime.color = Color.black;
             endReservationTime.color = Color.black;
             string clickedTime = timeSlots[i].ToString("HH:mm") + " - " + timeSlots[i+1].ToString("HH:mm");
+            // Loops through the json objects
             timeButtons[i].onClick.AddListener(() => OpenConfirmation(date, clickedTime));
-            foreach (string reservation in allReservations)
+            foreach (Reservation reservation in reservations.reservations)
             {
-                dateTime = reservation.Split("-");
+                dateTime = reservation.startDateTime.Split("-");
                 reservedTime = dateTime[2].Split(" ");
                 if (day == int.Parse(dateTime[0]))
                 {
@@ -223,24 +249,11 @@ public class Calendar : MonoBehaviour
                         endReservationTime.color = Color.red;
                         timeButtons[i].onClick.RemoveAllListeners();
                     }
-
                 }
             }
-
-            if (day == currentDay)
-            {
-                if (int.Parse(timeSlots[i].ToString("HH:mm").Split(":")[0]) < currentHour)
-                {
-                    startReservationTime.color = Color.red;
-                    endReservationTime.color = Color.red;
-                    timeButtons[i].onClick.RemoveAllListeners();
-
-                }
-            }
-
-
         }
     }
+
     private void OpenConfirmation(string clickedDate, string clickedTime)
     {
         // Deactivates gameobjects
@@ -253,6 +266,7 @@ public class Calendar : MonoBehaviour
 
         UpdateConfirmation(clickedDate, clickedTime);
     }
+
     private void UpdateConfirmation(string plannedDate, string plannedTime)
     {
         promptDate.text = plannedDate;
@@ -267,6 +281,7 @@ public class Calendar : MonoBehaviour
         });
 
     }
+
     private void OpenLocation(string pickedDate, string pickedTime)
     {
         // Deactivates gameobjects
@@ -281,21 +296,24 @@ public class Calendar : MonoBehaviour
         plannedDate = pickedDate;
         plannedTime = pickedTime;
 
+        credentialPath = Application.dataPath + "/credentials/reservations.json";
         reserveButton.onClick.AddListener(Reserve);
         UpdateLocations();
     }
+
     private void UpdateLocations()
     {
         ReserveDate.text = plannedDate;
         ReserveTime.text = plannedTime;
     }
+
     private void Reserve()
     {
-        string startDateTime = selectedDay + "-"+ currentMonth + "-" + currentYear + " " + plannedTime.Split("-")[0];
-        string endDateTime = selectedDay + "-"+ currentMonth + "-" + currentYear + " " + plannedTime.Split("-")[1];
+
+        string startDateTime = currentDay +"-"+ currentMonth + "-" + currentYear + " " + plannedTime.Split("-")[0];
+        string endDateTime = currentDay +"-"+ currentMonth + "-" + currentYear + " " + plannedTime.Split("-")[1];
+
         reservationsInsert.CallReserve(appData.GetLoginId(), startLocationInput.text, endLocationInput.text, startDateTime, endDateTime);
-        appData.SetFlashMsg("success","Gerserveerd voor " + selectedDay + "-" + currentMonth + "-" + currentYear + " " + plannedTime.Split("-")[0] + " - " + plannedTime.Split("-")[1]);
-        
-        SceneManager.LoadScene("HomeScreen");
+        SceneManager.LoadScene("ReservationScreen");
     }
 }
